@@ -10,6 +10,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import static com.example.myapplication.constant.AppConstant.BASE_URL;
+import static com.example.myapplication.constant.AppConstant.BASE_URL_FB;
 
 public class RetrofitRequest {
 
@@ -36,6 +37,7 @@ public class RetrofitRequest {
         }
         return retrofit;
     }
+
     public static Retrofit getRetrofitLogin(Context context) {
         if (retrofit == null) {
             retrofit = new retrofit2.Retrofit.Builder()
@@ -45,4 +47,5 @@ public class RetrofitRequest {
         }
         return retrofit;
     }
+
 }

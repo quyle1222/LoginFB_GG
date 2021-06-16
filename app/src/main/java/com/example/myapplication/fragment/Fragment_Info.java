@@ -16,7 +16,10 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.myapplication.R;
 import com.example.myapplication.Ultis.MySharePreferences;
+import com.example.myapplication.facebookuserModel.FacebookUser;
+import com.example.myapplication.viewmodel.LoginFacebookViewModel;
 import com.example.myapplication.viewmodel.UserViewModel;
+import com.facebook.login.LoginManager;
 
 
 public class Fragment_Info extends Fragment {
@@ -24,13 +27,14 @@ public class Fragment_Info extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     private String mParam1;
     private String mParam2;
-    TextView txtFullName;
-    TextView txtEmail;
-    ImageView imgAvatar;
-    UserViewModel userViewModel;
-    MySharePreferences mySharePreferences;
-    Button btnLogOut;
-    RelativeLayout layout;
+    private TextView txtFullName;
+    private TextView txtEmail;
+    private ImageView imgAvatar;
+    private UserViewModel userViewModel;
+    private MySharePreferences mySharePreferences;
+    private LoginFacebookViewModel loginFacebookViewModel;
+    private Button btnLogOut;
+    private RelativeLayout layout;
 
 
     public Fragment_Info() {
@@ -60,11 +64,12 @@ public class Fragment_Info extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment__info, container, false);
         initView(view);
-//        getDataUser(view);
-        fbLogin(view);
+        fbLogin();
         btnLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                LoginManager.getInstance().logOut();
+                mySharePreferences.setUnLoginFacebook();
                 mySharePreferences.removeId();
                 mySharePreferences.removeToken();
                 AppCompatActivity activityCompat = (AppCompatActivity) view.getContext();
@@ -72,7 +77,6 @@ public class Fragment_Info extends Fragment {
                 layout.setVisibility(View.GONE);
             }
         });
-
         return view;
     }
 
@@ -84,9 +88,12 @@ public class Fragment_Info extends Fragment {
         mySharePreferences = new MySharePreferences(view.getContext());
         btnLogOut = view.findViewById(R.id.btnLogOut);
         layout = view.findViewById(R.id.layoutDetailsFragment);
+        loginFacebookViewModel = new ViewModelProvider(this).get(LoginFacebookViewModel.class);
+
     }
 
-    private void getDataUser(View view) {
+    private void getDataUser() {
+
         userViewModel.getUserInfoLiveData().observe(getViewLifecycleOwner(), userInfo -> {
             if (userInfo != null && userInfo.getSuccess()) {
                 txtFullName.setText(userInfo.getData().getUserFullName());
@@ -98,10 +105,12 @@ public class Fragment_Info extends Fragment {
         });
     }
 
-    private void fbLogin(View view) {
-        String id = mySharePreferences.getId();
-        String token = mySharePreferences.getToken();
-        txtFullName.setText("ID : " + id);
-        txtEmail.setText("Token fb : " + token);
+    private void fbLogin() {
+        FacebookUser user = loginFacebookViewModel.getUser();
+        if (user!=null){
+            txtFullName.setText(user.getName());
+
+        }
+
     }
 }

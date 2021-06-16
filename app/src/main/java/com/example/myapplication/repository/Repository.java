@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.myapplication.Ultis.MySharePreferences;
+import com.example.myapplication.facebookuserModel.FacebookUser;
 import com.example.myapplication.loginModel.LoginInfo;
 import com.example.myapplication.loginModel.LoginRequest;
 import com.example.myapplication.retrofit.ApiRequest;
@@ -19,6 +20,7 @@ import retrofit2.Response;
 public class Repository {
     private ApiRequest apiResult;
     private ApiRequest apiRequest;
+    private ApiRequest fbRequest;
 
     private MySharePreferences mySharePreferences;
 
@@ -66,4 +68,6 @@ public class Repository {
         });
         return data;
     }
+
+
 }

@@ -44,4 +44,19 @@ public class MySharePreferences {
         SharedPreferences.Editor mainID = accountToken.edit().clear();
         mainID.apply();
     }
+
+    public void setLoginFacebook() {
+        SharedPreferences accountToken = mContext.getSharedPreferences(MY_SHARE_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor loginFace = accountToken.edit().putBoolean("loginFB", true);
+    }
+
+    public void setUnLoginFacebook() {
+        SharedPreferences accountToken = mContext.getSharedPreferences(MY_SHARE_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor loginFace = accountToken.edit().putBoolean("loginFB", false);
+    }
+
+    public boolean getLoginFacebook() {
+        SharedPreferences accountToken = mContext.getSharedPreferences(MY_SHARE_PREFERENCES, Context.MODE_PRIVATE);
+        return accountToken.getBoolean("loginFB",false);
+    }
 }
